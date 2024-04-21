@@ -117,3 +117,69 @@ void SLPopFront(SL* ps)
     }
     ps->size--;
 }
+
+
+//在pos位置插入数据
+void SLInsert(SL* ps, int pos, SLDateType x)
+{
+	assert(ps);
+	assert(pos >= 0);    // pos 的位置，因该在有效位置
+	assert(pos <= ps->size);  // 等于 “=” size 相当于尾插
+	SLCheckCapacity(ps); // 扩容
+	int end = ps->size - 1;
+	while (end >= pos)
+	{
+		ps->a[end + 1] = ps->a[end];
+		end--;
+	}
+	ps->a[pos] = x;
+	ps->size++;
+}
+
+//删除pos位置的数据
+
+// 其中 SLErase(ps,0) 就是头删
+// 其中 SLErase(ps,ps-size-1)  就是尾删
+
+void SLErase(SL* ps, int pos)
+{
+	assert(ps);
+	assert(pos >= 0);
+	assert(pos < ps->size);
+	assert(ps->size > 0);  //检查 size 是否为空
+	int begin = pos + 1;
+	while (begin < ps->size)
+	{
+		ps->a[begin - 1] = ps->a[begin];
+		begin++;
+	}
+	ps->size--;
+}
+
+// 查找某一个数据的位置是
+int SLFind(SL* ps, SLDateType x)
+{
+	assert(ps);
+	for (int i = 0; i < ps->size; i++)
+	{
+		if (ps->a[i] == x)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+// begin 查找 x 的起始位置
+int SLFinds(SL* ps, SLDateType x, int begin)
+{
+	assert(ps);
+	for (int i = begin; i < ps->size; i++)
+	{
+		if (ps->a[i] == x)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
